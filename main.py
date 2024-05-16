@@ -18,7 +18,7 @@ st.sidebar.title("News Article URLs")
 urls = []
 number_of_urls = st.sidebar.number_input(label="Number of Products",
                                                 min_value=0, max_value=20, value=1)
-vectorstore_openai = None
+
 for i in range(number_of_urls):
    url = st.sidebar.text_input(f"URL {i+1}")
    urls.append(url)
@@ -53,6 +53,7 @@ if process_url_clicked:
    main_placeholder.text("Embedding Vector Started Building...✅✅✅")
    time.sleep(2)
    vectorstore_openai.save_local(file_path)
+   # vectorstore = vectorstore_openai.as_retriever() 
    
    
 query = main_placeholder.text_input("Question: ")
