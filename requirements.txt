@@ -1,5 +1,7 @@
 langchain
 langchain-google-genai
+langchain_cohere
+langchain_community
 pillow
 newspaper3k 
 textstat 
