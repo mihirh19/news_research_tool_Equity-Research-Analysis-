@@ -29,8 +29,9 @@ for i in range(number_of_urls):
 process_url_clicked = st.sidebar.button("Process URLs")
 file_path = "faiss_store_cohere_embeddings"
 main_placeholder = st.empty()
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9, max_output_tokens=500)
-embeddings = CohereEmbeddings()
+llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
+# llm = Ollama(model="llama3", temperature=0.9, max_tokens=500)
+embeddings = CohereEmbeddings(cohere_api_key=st.secrets["COHERE_API_KEY"])
 
 if process_url_clicked:
    
