@@ -5,7 +5,9 @@ import time
 import langchain
 from langchain_google_genai  import ChatGoogleGenerativeAI
 from langchain_community.llms import Ollama
+from langchain_cohere import ChatCohere
 from langchain.chains import RetrievalQAWithSourcesChain
+from langchain_community.llms import HuggingFaceEndpoint
 from langchain.chains.qa_with_sources.loading import load_qa_with_sources_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
@@ -27,8 +29,11 @@ for i in range(number_of_urls):
 process_url_clicked = st.sidebar.button("Process URLs")
 file_path = "faiss_store_cohere_embeddings"
 main_placeholder = st.empty()
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
-# llm = Ollama(model="llama3", temperature=0.9, max_tokens=500)
+# llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
+# llm = HuggingFaceEndpoint(repo_id = "meta-llama/Meta-Llama-3-8B", 
+#                           max_length=500, token=st.secrets["HUGGINGFACEHUB_API_TOKEN"])
+# llm = Ollama(model="llama3")
+llm = ChatCohere(model="command", max_tokens=256, temperature=0.75, cohere_api_key=st.secrets["COHERE_API_KEY"])
 embeddings = CohereEmbeddings(cohere_api_key=st.secrets["COHERE_API_KEY"])
 
 if process_url_clicked:
