@@ -1,0 +1,12 @@
+langchain
+langchain-google-genai
+pillow
+dotenv
+newspaper3k 
+textstat 
+tiktoken 
+faiss-cpu
+unstructured
+playwright 
+selenium
+sentence-transformers
