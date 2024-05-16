@@ -1,7 +1,6 @@
 langchain
 langchain-google-genai
 pillow
-dotenv
 newspaper3k 
 textstat 
 tiktoken 

@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-from  dotenv import load_dotenv
 import pickle
 import time
 import langchain
@@ -13,7 +12,6 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_cohere  import CohereEmbeddings
 from langchain_community.vectorstores import FAISS
 
-load_dotenv()  # take environment variables from .env (especially openai api key)
 
 st.title("RockyBot: News Research Tool 📈")
 st.sidebar.title("News Article URLs")
