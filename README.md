@@ -19,6 +19,37 @@ RockyBot is a news research tool that processes and analyzes news articles from 
 - LangChain
 - Cohere API Key
 
+# Equity Research Analysis
+
+![Alt text](images/image.png)
+![Alt text](images/image-1.png)
+
+### Tech Architecture
+
+    - Issue 1 : Copy pasting article in ChatGPt is tedious
+    - Issue 2 : We need an aggregate knowledge base
+
+![Alt text](images/image-2.png)
+![Alt text](images/image-3.png)
+
+### Revenue of apple
+
+![Alt text](images/image-5.png)
+
+### calories in apple
+
+![Alt text](images/image-4.png)
+
+`Semantic search`
+
+## Vector Database
+
+![Alt text](images/image-6.png)
+
+## AWS Architecture
+
+![Alt text](images/Frame.png)
+
 ## Installation
 
 ### 1. Clone the repository:
@@ -54,10 +85,6 @@ COHERE_API_KEY = "your-cohere-api-key"
 ```bash
 streamlit run app.py
 ```
-
-## AWS Architecture
-
-![Alt text](Frame.png)
 
 ## Usage
 
