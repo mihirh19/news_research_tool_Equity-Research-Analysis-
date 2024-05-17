@@ -1,4 +1,7 @@
+![news_research_tool_Equity-Research-Analysis-](https://socialify.git.ci/mihirh19/news_research_tool_Equity-Research-Analysis-/image?description=1&descriptionEditable=RockyBot%20is%20a%20news%20research%20tool%20that%20processes%20and%20analyzes%20news%20articles%20from%20given%20URLs.%20&font=Source%20Code%20Pro&logo=https%3A%2F%2Fgithub.com%2Fmihirh19%2Fnews_research_tool_Equity-Research-Analysis-%2Fassets%2F128199131%2F5146a94d-cadc-4f99-b9de-c8d400c3e938&name=1&pattern=Circuit%20Board&theme=Light)
+
 # RockyBot: News Research Tool 📈
+
 
 RockyBot is a news research tool that processes and analyzes news articles from given URLs. It leverages LangChain, Cohere embeddings, and Streamlit to provide insights and answers based on the content of the articles.
 
