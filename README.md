@@ -1,0 +1,72 @@
+# RockyBot: News Research Tool 📈
+
+RockyBot is a news research tool that processes and analyzes news articles from given URLs. It leverages LangChain, Cohere embeddings, and Streamlit to provide insights and answers based on the content of the articles.
+
+## Features
+
+- Fetch and parse news articles from URLs
+- Split articles into manageable chunks
+- Create embeddings for the text using Cohere
+- Store embeddings in a FAISS index for efficient retrieval
+- Query the processed data to get answers and sources
+
+## Requirements
+
+- Python 3.7+
+- Streamlit
+- LangChain
+- Cohere API Key
+
+## Installation
+
+### 1. Clone the repository:
+
+```bash
+git clone https://github.com/mihirh19/news_research_tool_Equity-Research-Analysis-.git
+cd news_research_tool_Equity-Research-Analysis-
+```
+
+### 2. Create and activate a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+### 3. Install the required packages:
+
+```bash
+   pip install -r requirements.txt
+```
+
+## Setup
+
+### 1. Create a file named `secrets.toml` in the `.streamlit` directory with the following content:
+
+```toml
+COHERE_API_KEY = "your-cohere-api-key"
+```
+
+## Running the Application
+
+```bash
+streamlit run app.py
+```
+
+## Usage
+
+1.  Open the Streamlit application in your browser.
+2.  Enter the number of URLs you want to process in the sidebar.
+3.  Provide the URLs for the news articles.
+4.  Click on "Process URLs" to fetch and analyze the articles.
+5.  Enter a query in the text input box and click "Submit" to get answers based on the processed data.
+
+## Example :
+
+1.  enter 3 as number of urls
+2.  provide following urls:
+    1. https://www.moneycontrol.com/news/business/tata-motors-to-use-new-1-billion-plant-to-make-jaguar-land-rover-cars-report-12666941.html
+    2. https://www.moneycontrol.com/news/business/stocks/tata-motors-stock-jumps-x-after-robust-jlr-sales-brokerages-bullish-12603201.html
+    3. https://www.moneycontrol.com/news/business/stocks/buy-tata-motors-target-of-rs-1188-sharekhan-12411611.html
+3.  Click "Process URLs" to start processing.
+4.  Enter a query like `what is the target price of tata motors ?` and click `Submit` to get the answer.

@@ -18,7 +18,7 @@ from langchain_community.vectorstores import FAISS
 st.title("RockyBot: News Research Tool 📈")
 st.sidebar.title("News Article URLs")
 urls = []
-number_of_urls = st.sidebar.number_input(label="Number of Products",
+number_of_urls = st.sidebar.number_input(label="Number of URLS",
                                                 min_value=0, max_value=20, value=1)
 urls = [st.sidebar.text_input(f"URL {i+1}") for i in range(number_of_urls)]
 
