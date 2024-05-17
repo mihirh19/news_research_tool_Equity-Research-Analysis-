@@ -2,6 +2,7 @@ langchain
 langchain-google-genai
 langchain_cohere
 langchain_community
+langchain-nvidia-ai-endpoints
 pillow
 newspaper3k 
 textstat 
