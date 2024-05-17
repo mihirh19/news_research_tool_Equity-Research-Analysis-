@@ -107,3 +107,15 @@ streamlit run app.py
     3. https://www.moneycontrol.com/news/business/stocks/buy-tata-motors-target-of-rs-1188-sharekhan-12411611.html
 3.  Click "Process URLs" to start processing.
 4.  Enter a query like `what is the target price of tata motors ?` and click `Submit` to get the answer.
+
+## Author
+
+👤 **Mihir Hadavani**
+
+- Twitter: [@mihirh21](https://twitter.com/mihirh21)
+- Github: [@mihirh19](https://github.com/mihirh19)
+- LinkedIn: [@mihir-hadavani-996263232](https://linkedin.com/in/mihir-hadavani-996263232)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
