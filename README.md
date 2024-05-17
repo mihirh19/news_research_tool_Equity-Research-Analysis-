@@ -18,6 +18,8 @@ RockyBot is a news research tool that processes and analyzes news articles from 
 - Streamlit
 - LangChain
 - Cohere API Key
+## Used LLM
+`cohere common-r-plus`
 
 ## AWS Architecture
 
