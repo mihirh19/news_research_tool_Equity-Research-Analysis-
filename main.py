@@ -30,7 +30,7 @@ main_placeholder = st.empty()
 # llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
 llm = HuggingFaceEndpoint(repo_id = "mistralai/Mistral-7B-Instruct-v0.2", 
                         max_length=500, token=st.secrets["HUGGINGFACEHUB_API_TOKEN"])
-llm = Ollama(model="llama3")
+# llm = Ollama(model="llama3")
 # llm = ChatCohere(model="command-r-plus", max_tokens=256, temperature=0.75, cohere_api_key=st.secrets["COHERE_API_KEY"])
 # llm = ChatNVIDIA(model="meta/llama2-70b", temperature=0.75, nvidia_api_key=st.secrets["NVIDIA_API_KEY"])
 embeddings = CohereEmbeddings(cohere_api_key=st.secrets["COHERE_API_KEY"])
