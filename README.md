@@ -55,6 +55,11 @@ COHERE_API_KEY = "your-cohere-api-key"
 ```bash
 streamlit run app.py
 ```
+## AWS Architecture
+
+![Alt text](<Property 1=Default.png>)
+
+
 
 ## Usage
 
