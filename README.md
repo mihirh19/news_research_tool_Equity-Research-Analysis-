@@ -2,7 +2,6 @@
 
 # RockyBot: News Research Tool 📈
 
-
 RockyBot is a news research tool that processes and analyzes news articles from given URLs. It leverages LangChain, Cohere embeddings, and Streamlit to provide insights and answers based on the content of the articles.
 
 ## Features
@@ -55,11 +54,10 @@ COHERE_API_KEY = "your-cohere-api-key"
 ```bash
 streamlit run app.py
 ```
+
 ## AWS Architecture
 
-![Alt text](<Property 1=Default.png>)
-
-
+![Alt text](Frame.png)
 
 ## Usage
 
