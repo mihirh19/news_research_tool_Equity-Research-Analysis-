@@ -2,13 +2,14 @@
 
 # FinGuru: News Research Tool 📈
 
-FinGuru is a news research tool that processes and analyzes news articles from given URLs. It leverages LangChain, Google embeddings, and Streamlit to provide insights and answers based on the content of the articles.
+FinGuru is a news research tool that processes and analyzes news articles from given URLs and PDF. It leverages LangChain, Google embeddings, and Streamlit to provide insights and answers based on the content of the articles.
 
 ## Features
 
 - Fetch and parse news articles from URLs
+- Or parse data from given pdf
 - Split articles into manageable chunks
-- Create embeddings for the text using Cohere
+- Create embeddings for the text using GoogleEmbedding Model
 - Store embeddings in a FAISS index for efficient retrieval
 - Query the processed data to get answers and sources
 
@@ -18,11 +19,13 @@ FinGuru is a news research tool that processes and analyzes news articles from g
 - Streamlit
 - LangChain
 - Google API Key
+- GOOGLE_CSE_ID
+
 ## Used LLM
+
 `google gemini-pro`
 
 ## AWS Architecture
-
 
 ![Alt text](images/Frame.png)
 
@@ -53,7 +56,15 @@ FinGuru is a news research tool that processes and analyzes news articles from g
 
 ![Alt text](images/image-6.png)
 
+## Agents
 
+![Alt text](images/image-7.png)
+
+### Used Agents
+
+`Wikipedia`
+`Google Search`
+`Google Finance`
 
 ## Installation
 
@@ -79,10 +90,16 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 ## Setup
 
-### 1. Create a file named `secrets.toml` in the `.streamlit` directory with the following content:
+### 1. First, you need to set up the proper API keys and environment variables. To set it up, create the GOOGLE_API_KEY in the Google Cloud credential console (https://console.cloud.google.com/apis/credentials) and a GOOGLE_CSE_ID using the Programmable Search Engine (https://programmablesearchengine.google.com/controlpanel/create). Next, it is good to follow the instructions found here.
+
+### 2. create api key on https://serpapi.com/
+
+### 3. Create a file named `secrets.toml` in the `.streamlit` directory with the following content:
 
 ```toml
 GOOGLE_API_KEY = "your-google-api-key"
+GOOGLE_CSE_ID = "your-cse-id"
+SERP_API_KEY ="your-"
 ```
 
 ## Running the Application
@@ -94,12 +111,19 @@ streamlit run app.py
 ## Usage
 
 1.  Open the Streamlit application in your browser.
-2.  Enter the number of URLs you want to process in the sidebar.
-3.  Provide the URLs for the news articles.
-4.  Click on "Process URLs" to fetch and analyze the articles.
+2.  Select options From dropdown Menu in the sidebar
+3.  For URL :
+    - Enter the number of URLs you want to process in the sidebar.
+    - Provide the URLs for the news articles.
+    - Click on "Process URLs" to fetch and analyze the articles.
+4.  For pdf
+    - Upload a PDF.
+    - Click on "process Pdf" to analyze the PDF.
 5.  Enter a query in the text input box and click "Submit" to get answers based on the processed data.
 
-## Example :
+### You can also use the advance google search for financial questions.
+
+## Example 1 URL :
 
 1.  enter 3 as number of urls
 2.  provide following urls:
@@ -108,6 +132,12 @@ streamlit run app.py
     3. https://www.moneycontrol.com/news/business/stocks/buy-tata-motors-target-of-rs-1188-sharekhan-12411611.html
 3.  Click "Process URLs" to start processing.
 4.  Enter a query like `what is the target price of tata motors ?` and click `Submit` to get the answer.
+
+## Example 2 PDF :
+
+1. link Upload the Given PDF
+2. Click "Process PDF" to start processing.
+3. Enter a query like `what is the yoy change of revenue of tata motors ? `and click `Submit` to get answer.
 
 ## Author
 
