@@ -2,7 +2,7 @@
 
 # FinGuru: News Research Tool 📈
 
-FinGuru is a news research tool that processes and analyzes news articles from given URLs. It leverages LangChain, Cohere embeddings, and Streamlit to provide insights and answers based on the content of the articles.
+FinGuru is a news research tool that processes and analyzes news articles from given URLs. It leverages LangChain, Google embeddings, and Streamlit to provide insights and answers based on the content of the articles.
 
 ## Features
 
@@ -17,7 +17,7 @@ FinGuru is a news research tool that processes and analyzes news articles from g
 - Python 3.7+
 - Streamlit
 - LangChain
-- Cohere API Key
+- Google API Key
 ## Used LLM
 `cohere command-r-plus`
 
