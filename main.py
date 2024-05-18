@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import pickle
+import asyncio
 import time
 from langchain_google_genai  import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.llms import Ollama
@@ -43,7 +44,7 @@ Answer:
 prompt_template2 = """
 you are finance assistant, you can answer only  financial queries no other queries, you can also provide the sources of the information.
 if you don't know,then search from agent and return answer
-return the summarized answer and sources.
+return the short answer and provide sources link.
 
 Question: {question}
 
@@ -145,3 +146,7 @@ if button2:
          st.error(f"An error occurred: {e}")
    else:
       st.error("Please enter a query.")
+      
+
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)

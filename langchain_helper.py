@@ -74,7 +74,6 @@ def response_of_llm(llm, query, prompt_template):
    formatted_prompt = prompt.format(question=query)
    tools = [tool]
    agent = initialize_agent(llm=llm, tools=tools, agent="zero-shot-react-description", verbose=True)
-   print(agent)
    # agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
    result = agent.run({"input": formatted_prompt})
    return result
