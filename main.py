@@ -43,7 +43,7 @@ Answer:
 
 prompt_template2 = """
 you are finance assistant, you can answer only  financial queries no other queries, you can also provide the sources of the information.
-if you don't know,then search from agent and return answer
+if you don't know,then search from agent and
 return the short answer and provide sources link.
 
 Question: {question}
