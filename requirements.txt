@@ -12,3 +12,5 @@ unstructured
 playwright 
 selenium
 sentence-transformers
+chromadb
+langchain-chroma
