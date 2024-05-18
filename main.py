@@ -10,24 +10,25 @@ from langchain.chains import RetrievalQAWithSourcesChain
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain.chains.qa_with_sources.loading import load_qa_with_sources_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import WebBaseLoader
+from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
 # from langchain_cohere  import CohereEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain.prompts import PromptTemplate
 
-st.title("RockyBot: News Research Tool 📈")
+
+st.title("FinGuru: News Research Tool 📈")
 st.sidebar.title("News Article URLs")
 urls = []
 number_of_urls = st.sidebar.number_input(label="Number of URLS",
                                                 min_value=0, max_value=20, value=1)
 urls = [st.sidebar.text_input(f"URL {i+1}") for i in range(number_of_urls)]
-
+# pdfs = st.sidebar.file_uploader("Upload files", type=["pdf"])
 
 process_url_clicked = st.sidebar.button("Process URLs")
 file_path = "faiss_store_cohere_embeddings"
 main_placeholder = st.empty()
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
+llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"]    )
 # llm = HuggingFaceEndpoint(repo_id = "mistralai/Mistral-7B-Instruct-v0.2", 
 #                         max_length=500, token=st.secrets["HUGGINGFACEHUB_API_TOKEN"])
 # llm = Ollama(model="gemma")
@@ -43,9 +44,11 @@ if process_url_clicked:
             web_paths=urls
             
          )
+         # pdf_loader = PyPDFLoader(pdfs)
          with st.status("Loading Data...", expanded=True) as status:
             st.text("Data Loading...Started...✅✅✅")
             data = loader.load()
+            # pdf_data = pdf_loader.load_and_split()
             # split data
             text_splitter = RecursiveCharacterTextSplitter(
                separators=['\n\n', '\n', '.', ','],

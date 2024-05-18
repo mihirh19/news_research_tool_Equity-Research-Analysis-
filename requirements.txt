@@ -14,3 +14,4 @@ selenium
 sentence-transformers
 chromadb
 langchain-chroma
+pypdf
