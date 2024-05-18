@@ -8,3 +8,4 @@ newspaper3k
 textstat 
 playwright 
 sentence-transformers
+pypdf
