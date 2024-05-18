@@ -81,7 +81,7 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ### 1. Create a file named `secrets.toml` in the `.streamlit` directory with the following content:
 
 ```toml
-COHERE_API_KEY = "your-cohere-api-key"
+GOOGLE_API_KEY = "your-google-api-key"
 ```
 
 ## Running the Application
