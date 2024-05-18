@@ -3,14 +3,13 @@ import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from PyPDF2 import PdfReader
-from langchain_community.utilities import GoogleSearchAPIWrapper
+from langchain_community.utilities import GoogleSearchAPIWrapper, WikipediaAPIWrapper
 from langchain_core.tools import Tool
 from langchain.chains import RetrievalQAWithSourcesChain, RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain.agents import create_tool_calling_agent
 from langchain.agents import AgentExecutor
-from langchain.agents.initialize import initialize_agent
-
+from langchain.agents import initialize_agent, AgentType
+from langchain_community.utilities.google_finance import GoogleFinanceAPIWrapper
 
 text_splitter = RecursiveCharacterTextSplitter(
                separators=['\n\n', '\n', '.', ','],
@@ -63,18 +62,33 @@ def response_of_llm_for_pdf(file_path, embeddings, llm ,query, prompt_template):
 
 def response_of_llm(llm, query, prompt_template):
    search = GoogleSearchAPIWrapper(google_api_key=st.secrets["GOOGLE_API_KEY"], google_cse_id=st.secrets["GOOGLE_CSE_ID"])
-   tool = Tool(
+   google_tool = Tool(
     name="google_search",
     description="Search Google for recent results.",
     func=search.run,
    )
+   # wiki = load_tools(['wikipedia'], llm=llm)
+   wiki = WikipediaAPIWrapper()
+   wiki_tool = Tool(
+    name="wikipedia",
+    description="Search Wikipedia for relevant information.",
+    func=wiki.run,
+   )
+   gfi = GoogleFinanceAPIWrapper(serp_api_key=st.secrets["SERP_API_KEY"])
+   gfi_tool = Tool(
+    name="google_finance",
+    description="Search Google Finance for relevant information.",
+    func=gfi.run,
+   )
+   
    
    prompt = PromptTemplate(input_variables=["question"], template=prompt_template)
    
    formatted_prompt = prompt.format(question=query)
-   tools = [tool]
-   agent = initialize_agent(llm=llm, tools=tools, agent="zero-shot-react-description", verbose=True)
-   # agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+   tools = [wiki_tool, google_tool, gfi_tool]
+
+   agent = initialize_agent(llm=llm, tools=tools, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True, max_iterations=5)
+   # agent_executor = AgentExecutor(agent=agent, handle_parsing_errors=True, tools=tools)
    result = agent.run({"input": formatted_prompt})
    return result
    

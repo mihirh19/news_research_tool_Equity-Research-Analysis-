@@ -10,3 +10,6 @@ playwright
 sentence-transformers
 PyPDF2
 pypdf
+yfinance
+wikipedia
+google-search-results
