@@ -19,7 +19,7 @@ FinGuru is a news research tool that processes and analyzes news articles from g
 - LangChain
 - Google API Key
 ## Used LLM
-`cohere command-r-plus`
+`google gemini-pro`
 
 ## AWS Architecture
 
