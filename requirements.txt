@@ -6,12 +6,5 @@ langchain-nvidia-ai-endpoints
 pillow
 newspaper3k 
 textstat 
-tiktoken 
-faiss-cpu
-unstructured
 playwright 
-selenium
 sentence-transformers
-chromadb
-langchain-chroma
-pypdf

@@ -28,7 +28,7 @@ urls = [st.sidebar.text_input(f"URL {i+1}") for i in range(number_of_urls)]
 process_url_clicked = st.sidebar.button("Process URLs")
 file_path = "faiss_store_cohere_embeddings"
 main_placeholder = st.empty()
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"]    )
+llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"] )
 # llm = HuggingFaceEndpoint(repo_id = "mistralai/Mistral-7B-Instruct-v0.2", 
 #                         max_length=500, token=st.secrets["HUGGINGFACEHUB_API_TOKEN"])
 # llm = Ollama(model="gemma")
