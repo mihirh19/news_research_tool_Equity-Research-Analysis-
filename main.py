@@ -7,7 +7,9 @@ import langchain_helper as lh
 from st_pages import Page , show_pages, add_page_title
 from langchain_community.llms  import HuggingFaceEndpoint
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
-
+from streamlit_extras.buy_me_a_coffee import button
+from annotated_text import annotated_text, annotation
+from streamlit_extras.app_logo import add_logo
 st.set_page_config(initial_sidebar_state="expanded" )
 
 embeddings = GoogleGenerativeAIEmbeddings(google_api_key=st.secrets["GOOGLE_API_KEY"],model="models/embedding-001")
@@ -23,8 +25,8 @@ show_pages(
    ]
 )
 st.title("Welcome to FinGuru: News Research Tool 📈")
-
-
+add_logo("./images/finguru.png", height=200)
+button(username="mihir21", floating=True)
 
 file_path = "faiss_store"
 
