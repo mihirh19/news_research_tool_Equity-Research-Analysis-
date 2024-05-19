@@ -1,19 +1,18 @@
 ![news_research_tool_Equity-Research-Analysis-](https://socialify.git.ci/mihirh19/news_research_tool_Equity-Research-Analysis-/image?description=1&font=Source%20Code%20Pro&logo=https%3A%2F%2Fgithub.com%2Fmihirh19%2Fnews_research_tool_Equity-Research-Analysis-%2Fassets%2F128199131%2F2acd1645-40a8-4d11-b63e-f4541f2db9f1&name=1&pattern=Circuit%20Board&theme=Light)
 
-# FinGuru: News Research Tool 📈
+# 📈 FinGuru: News Research Tool
 
 FinGuru is a news research tool that processes and analyzes news articles from given URLs and PDF. It leverages LangChain, Google embeddings, and Streamlit to provide insights and answers based on the content of the articles.
 
-## Features
+## 🎯 Features
 
-- Fetch and parse news articles from URLs
-- Or parse data from given pdf
+- Fetch and parse news articles from URLs Or parse data from given pdf
 - Split articles into manageable chunks
 - Create embeddings for the text using GoogleEmbedding Model
 - Store embeddings in a FAISS index for efficient retrieval
 - Query the processed data to get answers and sources
 
-## Requirements
+## 🏗️ How It's Built
 
 - Python 3.7+
 - Streamlit
@@ -65,6 +64,9 @@ FinGuru is a news research tool that processes and analyzes news articles from g
 `Wikipedia`
 `Google Search`
 `Google Finance`
+`duckduckGo search `
+
+# 🚀 Getting Started
 
 ## Installation
 

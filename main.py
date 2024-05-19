@@ -1,37 +1,43 @@
 import os
 import streamlit as st
-import pickle
 import asyncio
 import time
 from langchain_google_genai  import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_community.llms import Ollama
-from langchain_cohere import ChatCohere
-from langchain.chains import RetrievalQAWithSourcesChain, RetrievalQA
-from langchain_community.llms import HuggingFaceEndpoint
-from langchain.chains.qa_with_sources.loading import load_qa_with_sources_chain
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import WebBaseLoader
-from PyPDF2 import PdfReader
-from langchain_community.vectorstores import FAISS
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
-from langchain.prompts import PromptTemplate
 import langchain_helper as lh
+from st_pages import Page , show_pages, add_page_title
+from langchain_community.llms  import HuggingFaceEndpoint
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
+st.set_page_config(initial_sidebar_state="expanded" )
+
+embeddings = GoogleGenerativeAIEmbeddings(google_api_key=st.secrets["GOOGLE_API_KEY"],model="models/embedding-001")
+# llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
+llm = HuggingFaceEndpoint(repo_id = "mistralai/Mistral-7B-Instruct-v0.2", 
+                        max_length=500, token=st.secrets["HUGGINGFACEHUB_API_TOKEN"])
+show_pages(
+   [
+      Page("main.py", "Home", "🏠"),
+      Page("page2.py", "Upload urls or PDF", "📄"),
+      Page("page3.py", "Search from Uploaded Data", "🔍"),
+      Page("page4.py", "Search from Financial Agents", "🔍")
+   ]
+)
+st.title("Welcome to FinGuru: News Research Tool 📈")
 
 
 
 file_path = "faiss_store"
 
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"] )
+# llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9,max_output_tokens=500, google_api_key=st.secrets["GOOGLE_API_KEY"])
 # llm = HuggingFaceEndpoint(repo_id = "mistralai/Mistral-7B-Instruct-v0.2", 
 #                         max_length=500, token=st.secrets["HUGGINGFACEHUB_API_TOKEN"])
 # llm = Ollama(model="gemma")
 # llm = ChatCohere(model="command-r-plus", max_tokens=256, temperature=0.75, cohere_api_key=st.secrets["COHERE_API_KEY"])
 # llm = ChatNVIDIA(model="meta/llama2-70b", temperature=0.75, nvidia_api_key=st.secrets["NVIDIA_API_KEY"])
-embeddings = GoogleGenerativeAIEmbeddings(google_api_key=st.secrets["GOOGLE_API_KEY"],model="models/embedding-001")
+
 prompt_template = """
 You are a research assistant.  you answer user queries based on the context provided, and do not make anything by yourself. if you don't know, then just say provided information not given in urls somthing like that,
-Only return the  answer below.
+Only return the  answer in formatted manner use bold,numbers like  below.
 
 
 Context: {context}
@@ -42,10 +48,9 @@ Answer:
 """
 
 prompt_template2 = """
-you are finance assistant, you can answer only  financial queries no other queries, you should also provide the sources of the information.
-if the input related to stock then do not go for wikipedia search,
-if you don't know,then go for agents search and
-return  the answer and provide the sources of the information. 
+you are finance assistant, you can answer only  financial and stock related  queries no other queries, you should also provide the sources of the information.
+always go with agents search and 
+return  the answer and provide the sources of the information in well formatted like bold font numbering pointing. 
 
 Question: {question}
 
@@ -56,99 +61,153 @@ If the topic is not related to finance, declare it directly and do not proceed w
 """
 
 
+st.markdown("""
 
+FinGuru is a news research tool that processes and analyzes news articles from given URLs and PDF. It leverages LangChain, Google embeddings, and Streamlit to provide insights and answers based on the content of the articles.
 
-c1 = st.container(border=True)
-main_placeholder = c1.empty()
+## 🎯 Features
 
-c1.title("FinGuru: News Research Tool 📈")
-st.sidebar.title("News Article URLs")
+- Fetch and parse news articles from URLs Or parse data from given pdf
+- Split articles into manageable chunks
+- Create embeddings for the text using GoogleEmbedding Model
+- Store embeddings in a FAISS index for efficient retrieval
+- Query the processed data to get answers and sources
 
-option = st.sidebar.selectbox(
-   "Source of news article",
-   ("URLS", "PDFS")
-)
-urls = []
-pdfs =None
-if option == "URLS":
-   number_of_urls = st.sidebar.number_input(label="Number of URLS",
-                                                min_value=0, max_value=20, value=1)
-   urls = [st.sidebar.text_input(f"URL {i+1}") for i in range(number_of_urls)]
-   process_url_clicked= st.sidebar.button("Process URLs")
-   
-   if process_url_clicked:
-      if all(urls):
-         try:
-            with c1.status("Loading Data...", expanded=True) as status:
-               st.text("Data Loading...Started...✅✅✅")
-               vectorstore_urls = lh.create_vector_store_from_urls(urls, embeddings)   
-               vectorstore_urls.save_local(file_path)
-               status.update(label="Processing complete! ✅ ", state='complete', expanded=False)
-            time.sleep(2)
-         except Exception as e:
-               main_placeholder.error(f"An error occurred: {e}")
-      else:
-         main_placeholder.error("Please enter all URLs.")
-if option == "PDFS":
-   pdfs = st.sidebar.file_uploader("Upload file", type=["pdf"])
-   process_pdfs_clicked = st.sidebar.button("Process PDFS")
-   if process_pdfs_clicked:
-      if pdfs:
-         try:
-            with c1.status("Loading Data...", expanded=True) as status:
-               c1.text("Data Loading...Started...✅✅✅")
-               vectorstore_urls = lh.create_vector_store_from_pdfs(pdfs, embeddings)   
-               vectorstore_urls.save_local(file_path)
-               status.update(label="Processing complete! ✅ ", state='complete', expanded=False)
-            time.sleep(2)
-         except Exception as e:
-               main_placeholder.error(f"An error occurred: {e}")
-      else:
-         main_placeholder.error("Please enter pdf")
+## 🏗️ How It's Built
 
-query = c1.text_input(f" # Question Related To provided URL or PDF: ")
-submit = c1.button(":rocket:", type='secondary')
-if submit:
-   if query:
-      try:
-         result = None
-         if option == "URLS":
-            result = lh.response_of_llm_for_url(llm=llm, file_path=file_path, embeddings=embeddings, query=query, prompt_template=prompt_template)
-         if option == "PDFS":
-            result = lh.response_of_llm_for_pdf(llm=llm, file_path=file_path, embeddings=embeddings, query=query, prompt_template=prompt_template)
-         c1.header("Answer")
-         if option== "URLS":
-            c1.write(result["answer"])
-         if option == "PDFS":
-            c1.write(result["result"])
-         sources = result.get("sources", "")
-         if sources:
-            c1.subheader("Sources:")
-            sources_list = sources.split("\n")  # Split the sources by newline
-            for source in sources_list:
-               c1.write(source)
-      except Exception as e:
-            c1.error(f"An error occurred: {e}")
-   else:
-      c1.error("Please enter a query.")
+- Python 3.7+
+- Streamlit
+- LangChain
+- Google API Key
+- GOOGLE_CSE_ID
 
-c2 = st.container(border=True)
-c2.title("Added (google search) agent for any financial search")
+## Used LLM
 
-query2 = c2.text_input("Anything :......")
-button2 = c2.button('🔍')
+`google gemini-pro`
 
-if button2:
-   if query2:
-      try:
-         result = lh.response_of_llm(llm=llm, query=query2, prompt_template=prompt_template2)
-         c2.header("Answer")
-         c2.write(result)
-      except Exception as e:
-         c2.error(f"An error occurred: {e}")
-   else:
-      c2.error("Please enter a query.")
-      
+## AWS Architecture            
+            """)
 
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
+st.image('./images/Frame.png')
+
+st.markdown("# Equity Research Analysis ")
+
+st.image(['./images/image.png', './images/image-1.png'])
+st.markdown("""
+            ### Tech Architecture
+
+    - Issue 1 : Copy pasting article in ChatGPt is tedious
+    - Issue 2 : We need an aggregate knowledge base
+         
+            """)
+
+st.image(['./images/image-2.png', './images/image-3.png'])
+st.markdown("### Revenue of apple")
+st.image("./images/image-5.png")
+st.markdown("### calories in apple")
+st.image("./images/image-4.png")   
+st.markdown("""
+            `Semantic search` 
+            
+            ## Vector Database""")
+st.image("images/image-6.png")
+st.markdown("## Agents")
+st.image("images/image-7.png")
+
+st.markdown("""
+            ### Used Agents
+
+`Wikipedia`
+`Google Search`
+`Google Finance`
+`duckduckGo search `
+
+# 🚀 Getting Started
+
+## Installation
+
+### 1. Clone the repository:
+
+```bash
+git clone https://github.com/mihirh19/news_research_tool_Equity-Research-Analysis-.git
+cd news_research_tool_Equity-Research-Analysis-
+```
+
+### 2. Create and activate a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+### 3. Install the required packages:
+
+```bash
+   pip install -r requirements.txt
+```
+
+## Setup
+
+1. First, you need to set up the proper API keys and environment variables. To set it up, create the GOOGLE_API_KEY in the Google Cloud credential console (https://console.cloud.google.com/apis/credentials) and a GOOGLE_CSE_ID using the Programmable Search Engine (https://programmablesearchengine.google.com/controlpanel/create). Next, it is good to follow the instructions found here.
+
+2. create api key on https://serpapi.com/
+
+### 3. Create a file named `secrets.toml` in the `.streamlit` directory with the following content:
+
+```toml
+GOOGLE_API_KEY = "your-google-api-key"
+GOOGLE_CSE_ID = "your-cse-id"
+SERP_API_KEY ="your-"
+```
+
+## Running the Application
+
+```bash
+streamlit run app.py
+```
+
+## Usage
+
+1.  Open the Streamlit application in your browser.
+2.  Select options From dropdown Menu in the sidebar
+3.  For URL :
+    - Enter the number of URLs you want to process in the sidebar.
+    - Provide the URLs for the news articles.
+    - Click on "Process URLs" to fetch and analyze the articles.
+4.  For pdf
+    - Upload a PDF.
+    - Click on "process Pdf" to analyze the PDF.
+5.  Enter a query in the text input box and click "Submit" to get answers based on the processed data.
+
+### You can also use the advance google search for financial questions.
+
+## Example 1 URL :
+
+1.  enter 3 as number of urls
+2.  provide following urls:
+    1. https://www.moneycontrol.com/news/business/tata-motors-to-use-new-1-billion-plant-to-make-jaguar-land-rover-cars-report-12666941.html
+    2. https://www.moneycontrol.com/news/business/stocks/tata-motors-stock-jumps-x-after-robust-jlr-sales-brokerages-bullish-12603201.html
+    3. https://www.moneycontrol.com/news/business/stocks/buy-tata-motors-target-of-rs-1188-sharekhan-12411611.html
+3.  Click "Process URLs" to start processing.
+4.  Enter a query like `what is the target price of tata motors ?` and click `Submit` to get the answer.
+
+## Example 2 PDF :
+
+1. link Upload the Given PDF
+2. Click "Process PDF" to start processing.
+3. Enter a query like `what is the yoy change of revenue of tata motors ? `and click `Submit` to get answer.
+
+## Author
+
+👤 **Mihir Hadavani**
+
+- Twitter: [@mihirh21](https://twitter.com/mihirh21)
+- Github: [@mihirh19](https://github.com/mihirh19)
+- LinkedIn: [@mihir-hadavani-996263232](https://linkedin.com/in/mihir-hadavani-996263232)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+            
+            """)

@@ -10,12 +10,16 @@ from langchain.prompts import PromptTemplate
 from langchain.agents import AgentExecutor
 from langchain.agents import initialize_agent, AgentType
 from langchain_community.utilities.google_finance import GoogleFinanceAPIWrapper
+from langchain_google_genai  import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_community.llms  import HuggingFaceEndpoint
+from langchain_community.tools import DuckDuckGoSearchRun,DuckDuckGoSearchResults
+
 
 text_splitter = RecursiveCharacterTextSplitter(
                separators=['\n\n', '\n', '.', ','],
                chunk_size=1000
             )
-def create_vector_store_from_urls(urls,embeddings):
+def create_vector_store_from_urls(urls, embeddings):
          loader = WebBaseLoader(
             web_paths=urls
             
@@ -25,7 +29,7 @@ def create_vector_store_from_urls(urls,embeddings):
          vectorstore_urls = FAISS.from_documents(docs, embeddings)
          return vectorstore_urls
       
-def create_vector_store_from_pdfs(pdfs,embeddings):
+def create_vector_store_from_pdfs(pdfs, embeddings):
          loader = PdfReader(pdfs)
          txt =""
          for page in loader.pages:
@@ -36,7 +40,7 @@ def create_vector_store_from_pdfs(pdfs,embeddings):
          return vectorstore_pdfs
       
 
-def response_of_llm_for_url(file_path, embeddings, llm ,query, prompt_template):
+def response_of_llm_for_url(file_path ,query, prompt_template, embeddings, llm):
    vectorIndex = FAISS.load_local(file_path, embeddings, allow_dangerous_deserialization=True)
    retriever = vectorIndex.as_retriever()
    relevant_docs = retriever.invoke(query)
@@ -48,16 +52,17 @@ def response_of_llm_for_url(file_path, embeddings, llm ,query, prompt_template):
    result = chain.invoke({"question": formatted_prompt}, return_only_outputs=True)
    return result
 
-def response_of_llm_for_pdf(file_path, embeddings, llm ,query, prompt_template):
+def response_of_llm_for_pdf(file_path,query, prompt_template, embeddings, llm):
    vectorIndex = FAISS.load_local(file_path, embeddings, allow_dangerous_deserialization=True)
    retriever = vectorIndex.as_retriever()
    relevant_docs = retriever.invoke(query)
    context = " ".join([doc.page_content for doc in relevant_docs])
    prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
    formatted_prompt = prompt.format(context=context, question=query)
-   chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
+   print(formatted_prompt)
+   chain = RetrievalQA.from_llm(llm=llm, retriever=retriever)
+   
    result = chain.invoke({"query": formatted_prompt}, return_only_outputs=True)
-
    return result
 
 def response_of_llm(llm, query, prompt_template):
@@ -80,15 +85,19 @@ def response_of_llm(llm, query, prompt_template):
     description="Search Google Finance for relevant information.",
     func=gfi.run,
    )
-   
+   duck = DuckDuckGoSearchRun(back="news")
+   duck_tool = Tool(
+    name="duckduckgo",
+    description="Search DuckDuckGo for relevant information.",
+    func=duck.run,
+   )
    
    prompt = PromptTemplate(input_variables=["question"], template=prompt_template)
    
    formatted_prompt = prompt.format(question=query)
-   tools = [wiki_tool, google_tool, gfi_tool]
+   tools = [ duck_tool]
 
    agent = initialize_agent(llm=llm, tools=tools, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True, max_iterations=5)
    # agent_executor = AgentExecutor(agent=agent, handle_parsing_errors=True, tools=tools)
-   result = agent.run({"input": formatted_prompt})
-   return result
+   return agent.invoke({"input": formatted_prompt})
    

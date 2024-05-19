@@ -13,3 +13,5 @@ pypdf
 yfinance
 wikipedia
 google-search-results
+st-pages
+duckduckgo-search
