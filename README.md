@@ -137,7 +137,8 @@ streamlit run app.py
 
 ## Example 2 PDF :
 
-1. link Upload the Given PDF
+1. [AnnualReport202223.pdf](https://github.com/mihirh19/news_research_tool_Equity-Research-Analysis-/files/15366094/AnnualReport202223.pdf)  Upload the Given PDF
+
 2. Click "Process PDF" to start processing.
 3. Enter a query like `what is the yoy change of revenue of tata motors ? `and click `Submit` to get answer.
 
