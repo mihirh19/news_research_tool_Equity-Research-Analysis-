@@ -79,12 +79,6 @@ def response_of_llm(llm, query, prompt_template):
     description="Search Wikipedia for relevant information.",
     func=wiki.run,
    )
-   gfi = GoogleFinanceAPIWrapper(serp_api_key=st.secrets["SERP_API_KEY"])
-   gfi_tool = Tool(
-    name="google_finance",
-    description="Search Google Finance for relevant information.",
-    func=gfi.run,
-   )
    duck = DuckDuckGoSearchRun(back="news")
    duck_tool = Tool(
     name="duckduckgo",
