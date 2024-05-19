@@ -92,9 +92,9 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 ## Setup
 
-### 1. First, you need to set up the proper API keys and environment variables. To set it up, create the GOOGLE_API_KEY in the Google Cloud credential console (https://console.cloud.google.com/apis/credentials) and a GOOGLE_CSE_ID using the Programmable Search Engine (https://programmablesearchengine.google.com/controlpanel/create). Next, it is good to follow the instructions found here.
+1. First, you need to set up the proper API keys and environment variables. To set it up, create the GOOGLE_API_KEY in the Google Cloud credential console (https://console.cloud.google.com/apis/credentials) and a GOOGLE_CSE_ID using the Programmable Search Engine (https://programmablesearchengine.google.com/controlpanel/create). Next, it is good to follow the instructions found here.
 
-### 2. create api key on https://serpapi.com/
+2. create api key on https://serpapi.com/
 
 ### 3. Create a file named `secrets.toml` in the `.streamlit` directory with the following content:
 
@@ -137,7 +137,7 @@ streamlit run app.py
 
 ## Example 2 PDF :
 
-1. [AnnualReport202223.pdf](https://github.com/mihirh19/news_research_tool_Equity-Research-Analysis-/files/15366094/AnnualReport202223.pdf)  Upload the Given PDF
+1. [AnnualReport202223.pdf](https://github.com/mihirh19/news_research_tool_Equity-Research-Analysis-/files/15366094/AnnualReport202223.pdf) Upload the Given PDF
 
 2. Click "Process PDF" to start processing.
 3. Enter a query like `what is the yoy change of revenue of tata motors ? `and click `Submit` to get answer.
